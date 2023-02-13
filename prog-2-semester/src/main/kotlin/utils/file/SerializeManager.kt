@@ -1,13 +1,23 @@
 package utils.file
 
 import data.MusicBand
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
+
 
 class SerializeManager : Serializer {
-    override fun serialize(collection: LinkedHashMap<Int, MusicBand>): String {
-        TODO("Not yet implemented")
+    private val module = SerializersModule {
+        contextual(KZonedDateTimeSerializer)
     }
 
-    override fun deserialize(json: String): LinkedHashMap<Int, MusicBand> {
-        TODO("Not yet implemented")
-    }
+    private val serializer = Json { serializersModule = module }
+
+    override fun serialize(collection: LinkedHashMap<Int, MusicBand>) =
+        serializer.encodeToString(collection)
+
+    override fun deserialize(json: String) =
+        serializer.decodeFromString<LinkedHashMap<Int, MusicBand>>(json)
 }
