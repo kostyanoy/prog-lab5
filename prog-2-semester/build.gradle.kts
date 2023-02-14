@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     val kotlinVersion = "1.8.0"
     testImplementation(kotlin("test"))
     implementation(kotlin("serialization", version = kotlinVersion))

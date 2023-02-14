@@ -1,4 +1,4 @@
-package utils.file
+package utils.serialize
 
 import data.MusicBand
 import kotlinx.serialization.decodeFromString
