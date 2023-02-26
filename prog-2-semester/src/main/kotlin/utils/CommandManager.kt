@@ -1,9 +1,17 @@
 package utils
 
+import commands.Command
 import commands.CommandType
 
-class CommandManager {
-    fun processCommand(type: CommandType, vararg args: Array<Any>) {
-        TODO("Not implemented yet!")
+class CommandManager(val interactor: Interactor, val storage: Storage) {
+    val commands = mapOf<String, Command>()
+
+    fun getCommand(name: String) : Command{
+        return object : Command(interactor, storage) {
+            override fun execute() {
+                TODO("Not yet implemented")
+            }
+        }
     }
+
 }
