@@ -1,0 +1,8 @@
+package utils.serialize
+
+import data.MusicBand
+
+interface Serializer {
+    fun serialize(collection: LinkedHashMap<Int, MusicBand>): String;
+    fun deserialize(json: String): LinkedHashMap<Int, MusicBand>
+}
