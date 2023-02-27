@@ -1,5 +1,5 @@
 package commands
-import Exceptions.ParameterException
+
 import utils.*
 
 class RemoveGreater(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
@@ -7,8 +7,10 @@ class RemoveGreater(interactor: Interactor, storage: Storage) : Command(interact
         interactor.showMessage("Выполняется команда remove_greater")
         val collection = storage.getCollection()
         val element = interactor.getMusicBand()
-        try {
-            for(value in collection.values){
-                if (element < value){
-                    storage.remove(interactor.getInt(), element)} } }
-        catch (e: ParameterException){ (e.message) }}}
+        for (key in collection.keys) {
+            if (element > collection[key]!!) {
+                storage.removeKey(key)
+            }
+        }
+    }
+}

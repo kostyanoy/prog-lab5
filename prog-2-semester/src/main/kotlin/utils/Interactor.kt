@@ -1,5 +1,4 @@
 package utils
-
 import data.MusicBand
 
 interface Interactor {
@@ -12,5 +11,4 @@ interface Interactor {
     fun getMusicBand(): MusicBand
     fun showMessage(message: String)
     fun getCommand()
-    fun getCollection()
 }

@@ -4,11 +4,7 @@ import data.MusicBand
 
 class InteractionManager(val reader: Reader, val writer: Writer) : Interactor {
 
-    override fun getCommand(){
-        TODO("Not yet implemented")
-    }
-
-    override fun getCollection() {
+    override fun getCommand() {
         TODO("Not yet implemented")
     }
 
