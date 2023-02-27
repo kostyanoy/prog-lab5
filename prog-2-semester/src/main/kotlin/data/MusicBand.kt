@@ -21,9 +21,15 @@ data class MusicBand(
 
 
     override fun compareTo(other: MusicBand): Int {
-        return id - other.id;
+        return id - other.id
     }
 }
+
+/**
+ * Function used to generate id for MusicBand class
+ *
+ * @return random Int from 0 to [Int.MAX_VALUE]
+ */
 
 fun generateId(): Int {
     return Random.nextInt(0, Int.MAX_VALUE)

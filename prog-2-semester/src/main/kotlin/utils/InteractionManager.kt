@@ -56,7 +56,7 @@ class InteractionManager(
         val name = userManager.getValidatedValue("Введите название банды: ") {
             it.isNotEmpty()
         }
-        val coordX = userManager.getValidatedValue("Введите координату Х: ") {
+        val coordX = userManager.getValidatedValue("Введите координату Х (<=552): ") {
             (it.toFloatOrNull() ?: return@getValidatedValue false) <= 552
         }.toFloat()
         val coordY = userManager.getValidatedValue("Введите координату Y: ") {
@@ -105,9 +105,9 @@ class InteractionManager(
             return
         }
 
-        //val command = commandManager.getCommand(input[0])
+        val command = commandManager.getCommand(input[0])
         lastArgument = if (input.count() == 2) input[1] else null
-        //command.execute()
+        command.execute()
 
     }
 }
