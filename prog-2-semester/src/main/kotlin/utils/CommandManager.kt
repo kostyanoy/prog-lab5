@@ -13,6 +13,7 @@ class CommandManager(interactor: Interactor, storage: Storage) {
         "update" to Update(interactor, storage),
         "remove_key" to RemoveKey(interactor, storage),
         "save" to Save(interactor, storage),
+        "load" to Load(interactor, storage),
         "execute_script" to ExecuteScript(interactor, storage),
         "exit" to Exit(interactor, storage),
         "remove_greater" to RemoveGreater(interactor, storage),

@@ -1,12 +1,15 @@
 package commands
 
 import utils.*
+import kotlin.text.StringBuilder
 
 class Show(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
         interactor.showMessage("Выполняется команда show")
+        val message = StringBuilder()
         for (musicBand in storage.getCollection()) {
-            interactor.showMessage(musicBand.toString())
+            message.append("\n $musicBand")
         }
+        interactor.showMessage(message.toString())
     }
 }

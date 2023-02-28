@@ -8,9 +8,9 @@ class Insert(interactor: Interactor, storage: Storage) : Command(interactor, sto
         interactor.showMessage("Выполняется команда insert")
         val userKey = interactor.getInt()
         val collection = storage.getCollection()
-        storage.insertNull(userKey, interactor.getMusicBand())
-        if(userKey in collection.keys){
+        if (userKey in collection.keys) {
             throw ParameterException("Элемент с таким ключом уже существует")
         }
+        storage.insert(userKey, interactor.getMusicBand())
     }
 }

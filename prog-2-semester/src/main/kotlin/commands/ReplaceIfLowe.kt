@@ -7,9 +7,9 @@ class ReplaceIfLowe(interactor: Interactor, storage: Storage) : Command(interact
         interactor.showMessage("Выполняется команда replace_if_lowe")
         val collection = storage.getCollection()
         val userKey = interactor.getInt()
-        val element = interactor.getMusicBand()
-        if (element < collection[userKey]!!) {
-            storage.update(userKey, element)
+        val userElement = interactor.getMusicBand()
+        if (userElement < collection[userKey]!!) {
+            storage.update(userKey, userElement)
         }
     }
 }

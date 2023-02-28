@@ -11,12 +11,16 @@ class StorageManager(interactor: Interactor) : Storage {
         println("Коллекция  ${this.javaClass} \nтип: LinkedHashMap количество элементов  ${musicBandCollection.size} \nдата инициализации $date")
     }
 
-    override fun insertNull(id: Int, element: MusicBand) {
+    override fun insert(id: Int, element: MusicBand) {
         musicBandCollection.put(id, element)
     }
 
     override fun update(id: Int, element: MusicBand) {
         musicBandCollection.set(id, element)
+    }
+
+    override fun clear() {
+        musicBandCollection.clear()
     }
 
     override fun removeKey(id: Int) {

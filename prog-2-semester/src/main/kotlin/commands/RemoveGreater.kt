@@ -6,9 +6,9 @@ class RemoveGreater(interactor: Interactor, storage: Storage) : Command(interact
     override fun execute() {
         interactor.showMessage("Выполняется команда remove_greater")
         val collection = storage.getCollection()
-        val element = interactor.getMusicBand()
+        val useElement = interactor.getMusicBand()
         for (key in collection.keys) {
-            if (element > collection[key]!!) {
+            if (useElement > collection[key]!!) {
                 storage.removeKey(key)
             }
         }

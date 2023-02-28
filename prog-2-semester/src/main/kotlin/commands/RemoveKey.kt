@@ -8,10 +8,9 @@ class RemoveKey(interactor: Interactor, storage: Storage) : Command(interactor, 
         interactor.showMessage("Выполняется команда removeKey")
         val userKey = interactor.getInt()
         val collection = storage.getCollection()
-        storage.removeKey(interactor.getInt())
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
-
+        storage.removeKey(interactor.getInt())
     }
 }
