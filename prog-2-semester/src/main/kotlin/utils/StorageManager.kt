@@ -1,15 +1,35 @@
 package utils
 
 import data.MusicBand
+import java.time.LocalDateTime
 
-class StorageManager : Storage {
-    val hashMap = LinkedHashMap<Int, MusicBand>()
+class StorageManager(interactor: Interactor) : Storage {
+    private val date: LocalDateTime = LocalDateTime.now()
+    val musicBandCollection = LinkedHashMap<Int, MusicBand>()
 
-    override fun getCollection(): LinkedHashMap<Int, MusicBand> = hashMap;
-
-    override fun add(element: MusicBand) {
-        TODO("Not yet implemented")
+    override fun getInfo() {
+        println("Коллекция  ${this.javaClass} \nтип: LinkedHashMap количество элементов  ${musicBandCollection.size} \nдата инициализации $date")
     }
 
-    //more functions for commands
+    override fun insert(id: Int, element: MusicBand) {
+        musicBandCollection.put(id, element)
+    }
+
+    override fun update(id: Int, element: MusicBand) {
+        musicBandCollection.set(id, element)
+    }
+
+    override fun clear() {
+        musicBandCollection.clear()
+    }
+
+    override fun removeKey(id: Int) {
+        musicBandCollection.remove(id)
+    }
+
+    override fun getCollection(): LinkedHashMap<Int, MusicBand> {
+        return musicBandCollection
+    }
 }
+
+

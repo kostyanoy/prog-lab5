@@ -1,5 +1,7 @@
 package commands
 
-abstract class Command(val name: String) {
+import utils.*
+
+abstract class Command(val interactor: Interactor,val storage: Storage) {
     abstract fun execute()
 }
