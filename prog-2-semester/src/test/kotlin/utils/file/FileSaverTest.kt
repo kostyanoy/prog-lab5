@@ -13,15 +13,15 @@ internal class FileSaverTest {
     private val path = "src/test/kotlin/save.txt"
     private val fileSaver = FileSaver(path)
     private val band1 = MusicBand(
-        1,
         "s",
         Coordinates(1.0f, 2.0),
-        ZonedDateTime.now(),
         1,
         1,
         "s",
         MusicGenre.HIP_HOP,
-        null
+        null,
+        1,
+        ZonedDateTime.now()
     )
     private val band2 = band1.copy(id = 2)
     private val originalCollection = linkedMapOf(1 to band1, 2 to band2)

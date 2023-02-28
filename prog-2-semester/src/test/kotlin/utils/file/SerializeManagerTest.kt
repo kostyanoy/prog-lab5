@@ -13,15 +13,15 @@ import java.time.ZonedDateTime
 internal class SerializeManagerTest{
     val serializer = SerializeManager()
     val band = MusicBand(
-        1,
         "s",
         Coordinates(1.0f, 2.0),
-        ZonedDateTime.now(),
         1,
         1,
         "s",
         MusicGenre.HIP_HOP,
-        null
+        null,
+        1,
+        ZonedDateTime.now()
     )
 
     @Test
