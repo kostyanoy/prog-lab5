@@ -6,10 +6,10 @@ class CountGreaterThanDescription(interactor: Interactor, storage: Storage) : Co
     override fun execute() {
         interactor.showMessage("Выполняется команда count_greater_than_description")
         val collection = storage.getCollection()
-        val userElement = interactor.getMusicBand()
+        val userDescription = interactor.getString()
         var countDescription = 0
         for (value in collection.values) {
-            if (userElement.description < value.description) {
+            if (userDescription < value.description) {
                 countDescription++
             }
         }

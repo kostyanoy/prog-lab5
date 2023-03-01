@@ -1,3 +1,3 @@
 package exceptions
 
-class CommandException(message: String?) : Throwable()
+class CommandException(message: String?) : Throwable(message)

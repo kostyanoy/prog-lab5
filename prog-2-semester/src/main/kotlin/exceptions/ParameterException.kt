@@ -1,3 +1,3 @@
 package exceptions
 
-class ParameterException(message: String?) : Throwable()
+class ParameterException(message: String?) : Throwable(message)

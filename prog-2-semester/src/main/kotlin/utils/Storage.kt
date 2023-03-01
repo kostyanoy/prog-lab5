@@ -5,7 +5,7 @@ import data.MusicBand
 interface Storage {
     fun getCollection():LinkedHashMap<Int, MusicBand>
     fun removeKey(id: Int)
-    fun getInfo()
+    fun getInfo(): String
     fun insert(id: Int, element: MusicBand)
     fun update(id: Int, element: MusicBand)
     fun clear()

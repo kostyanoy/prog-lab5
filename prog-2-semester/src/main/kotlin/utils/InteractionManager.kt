@@ -19,6 +19,8 @@ class InteractionManager(
     private val invitation = ">>>"
     private var isActive = true
     private var lastArgument: String? = null
+    private val executingFiles = ArrayDeque<String>()
+
 
     override fun start() {
         userManager.writeLine("Здрасьте, для вывода списка команд введите help")
@@ -95,6 +97,17 @@ class InteractionManager(
     }
 
     override fun showMessage(message: String) = userManager.writeLine(message)
+    override fun executeCommandFile(path: String) {
+        val text = fileManager.readFile(path)
+        if (path in executingFiles) {
+            showMessage("Предотвращение зацикливания!")
+            return
+        }
+        executingFiles.add(path)
+        FileInteractor(this, storage, text.lines()).start()
+        executingFiles.removeLast()
+    }
+
     override fun showInvitation(message: String) = userManager.write(message)
 
     private fun interact() {
@@ -105,9 +118,17 @@ class InteractionManager(
             return
         }
 
-        val command = commandManager.getCommand(input[0])
-        lastArgument = if (input.count() == 2) input[1] else null
-        command.execute()
+        try {
+            val command = commandManager.getCommand(input[0])
+            lastArgument = if (input.count() == 2) input[1] else null
+            command.execute()
+
+        } catch (e: Throwable) {
+            e.message?.let { showMessage(it) }
+        } finally {
+            executingFiles.clear()
+        }
+
 
     }
 }
