@@ -1,5 +1,6 @@
 package utils.file
 
+import exceptions.FileException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
@@ -16,6 +17,9 @@ class FileManager {
     }
 
     fun readFile(path: String): String {
+        if (!File(path).canRead()) {
+            throw FileException("Не получается открыть файл")
+        }
         val scanner = Scanner(File(path))
         return buildString {
             while (scanner.hasNextLine()) {

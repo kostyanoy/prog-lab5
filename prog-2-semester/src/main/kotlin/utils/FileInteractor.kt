@@ -4,7 +4,7 @@ import data.Album
 import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
-import exceptions.FileException
+import exceptions.CommandFileException
 
 class FileInteractor(
     private val interactor: Interactor,
@@ -30,43 +30,43 @@ class FileInteractor(
     private fun interact(stringCommand: String) {
         val input = stringCommand.split(" ")
         if (input.count() > 2) {
-            throw FileException("Слишком много аргументов в строке")
+            throw CommandFileException("Слишком много аргументов в строке")
         }
 
         try {
             val command = commandManager.getCommand(input[0])
             lastArgument = if (input.count() == 2) input[1] else null
             command.execute()
-        } catch (e: FileException) {
+        } catch (e: CommandFileException) {
             throw e
         } catch (e: Throwable){
-            throw FileException(e.message)
+            throw CommandFileException(e.message)
         }
     }
 
 
     override fun getString(): String {
-        return lastArgument ?: throw FileException("Нет аргумента")
+        return lastArgument ?: throw CommandFileException("Нет аргумента")
     }
 
     override fun getInt(): Int {
-        return lastArgument?.toIntOrNull() ?: throw FileException("Не Int")
+        return lastArgument?.toIntOrNull() ?: throw CommandFileException("Не Int")
     }
 
     override fun getMusicBand(): MusicBand {
         val name = next()
         val coordinates = Coordinates(
-            next().toFloatOrNull() ?: throw FileException("Не Float"),
-            next().toDoubleOrNull() ?: throw FileException("Не Double")
+            next().toFloatOrNull() ?: throw CommandFileException("Не Float"),
+            next().toDoubleOrNull() ?: throw CommandFileException("Не Double")
         )
-        val numberOfParticipants = next().toIntOrNull() ?: throw FileException("Не Int")
+        val numberOfParticipants = next().toIntOrNull() ?: throw CommandFileException("Не Int")
         val albumsCount = next().toLongOrNull()
         val description = next()
-        val genre = MusicGenre.valueOfOrNull(next()) ?: throw FileException("Не MusicBand")
+        val genre = MusicGenre.valueOfOrNull(next()) ?: throw CommandFileException("Не MusicBand")
         var album: Album? = null
         val albumName = next()
         if (albumName.isNotEmpty()) {
-            val albumLength = next().toLongOrNull() ?: throw FileException("Не Long")
+            val albumLength = next().toLongOrNull() ?: throw CommandFileException("Не Long")
             album = Album(albumName, albumLength)
         }
         return MusicBand(
@@ -82,7 +82,7 @@ class FileInteractor(
 
     fun next(): String {
         if (hasNext()) return lines[index++]
-        throw FileException("Недостаточно строк")
+        throw CommandFileException("Недостаточно строк")
     }
 
     fun hasNext(): Boolean = (index < lines.count())

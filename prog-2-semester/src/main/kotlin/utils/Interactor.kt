@@ -1,6 +1,7 @@
 package utils
 
 import data.MusicBand
+import data.MusicGenre
 
 interface Interactor {
     fun start()
@@ -13,4 +14,5 @@ interface Interactor {
     fun showMessage(message: String)
     fun executeCommandFile(path: String)
     fun showInvitation(message: String)
+    fun getGenre(): MusicGenre
 }

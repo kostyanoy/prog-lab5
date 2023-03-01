@@ -4,6 +4,7 @@ import data.Album
 import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
+import exceptions.FileException
 import utils.console.ConsoleManager
 import utils.file.FileManager
 import utils.file.FileSaver
@@ -23,6 +24,12 @@ class InteractionManager(
 
 
     override fun start() {
+        try {
+            commandManager.getCommand("load").execute()
+            showMessage("Загружена коллекция из файла сохранения!")
+        } catch (e: FileException) {
+            e.message?.let { showMessage(it) }
+        }
         userManager.writeLine("Здрасьте, для вывода списка команд введите help")
         while (isActive) {
             interact()
@@ -50,6 +57,15 @@ class InteractionManager(
         while (res == null) {
             showInvitation("Вы должны ввести аргумент типа число: ")
             res = userManager.readLine().toIntOrNull()
+        }
+        return res
+    }
+
+    override fun getGenre(): MusicGenre {
+        var res = lastArgument?.let { MusicGenre.valueOfOrNull(it) }
+        while (res == null) {
+            showInvitation("Вы должны ввести жанр (PROGRESSIVE_ROCK, HIP_HOP, PSYCHEDELIC_CLOUD_RAP, SOUL, POST_PUNK): ")
+            res = MusicGenre.valueOfOrNull(userManager.readLine())
         }
         return res
     }

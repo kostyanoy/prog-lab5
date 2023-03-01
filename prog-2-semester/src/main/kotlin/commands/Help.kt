@@ -1,6 +1,7 @@
 package commands
 
-import utils.*
+import utils.Interactor
+import utils.Storage
 
 class Help(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
@@ -21,6 +22,7 @@ class Help(interactor: Interactor, storage: Storage) : Command(interactor, stora
                     "\nreplace_if_lowe : заменить значение по ключу, если новое значение меньше старого" +
                     "\nremove_greater_key : удалить из коллекции все элементы, ключ которых превышает заданный" +
                     "\ncount_greater_than_description : вывести количество элементов, значение поля description которых больше заданного" +
-                    "\nfilter_less_than_genre : вывести элементы, значение поля genre которых меньше заданного")
+                    "\nfilter_less_than_genre : вывести элементы, значение поля genre которых меньше заданного"
+        )
     }
 }
