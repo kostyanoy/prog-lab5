@@ -3,6 +3,11 @@ package commands
 import exceptions.ParameterException
 import utils.*
 
+/**
+ * The command that updates the value of a collection item whose id is equal to the specified one
+ *
+ * @exception [ParameterException] used if the element with the specified key does not exist
+ */
 class Update(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
         interactor.showMessage("Выполняется команда update")

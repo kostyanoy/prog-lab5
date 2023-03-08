@@ -3,6 +3,9 @@ package utils
 import exceptions.CommandException
 import commands.*
 
+/**
+ * The class is used to refer to commands
+ */
 class CommandManager(interactor: Interactor, storage: Storage) {
     val commands = mapOf<String, Command>(
         "help" to Help(interactor, storage),
@@ -22,6 +25,10 @@ class CommandManager(interactor: Interactor, storage: Storage) {
         "count_greater_than_description" to CountGreaterThanDescription(interactor, storage),
         "filter_less_than_genre" to FilterLessThanGenre(interactor, storage)
     )
+
+    /**
+     * Checks if the command exists
+     */
     fun getCommand(name: String): Command {
         return commands[name] ?: throw CommandException("Такой команды не существует")
     }

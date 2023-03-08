@@ -3,6 +3,9 @@ package commands
 import utils.Interactor
 import utils.Storage
 
+/**
+ * The command displays help for available commands
+ */
 class Help(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
         interactor.showMessage(
