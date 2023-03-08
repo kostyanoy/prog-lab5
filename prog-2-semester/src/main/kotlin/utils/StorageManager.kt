@@ -3,7 +3,7 @@ package utils
 import data.MusicBand
 import java.time.LocalDateTime
 
-class StorageManager() : Storage {
+class StorageManager : Storage {
     private val date: LocalDateTime = LocalDateTime.now()
     val musicBandCollection = LinkedHashMap<Int, MusicBand>()
 
