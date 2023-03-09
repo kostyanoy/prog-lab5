@@ -17,15 +17,16 @@ internal class ReplaceIfLoweTest {
     @Test
     fun `Replace MusicBand if user element is lower than current element`() {
         val interactor = mockk<Interactor>(relaxed = true)
-        val storage = mockk<StorageManager>()
+        val storage = StorageManager()
 
         every { interactor.getInt() }.returns(1)
-        every { interactor.getMusicBand() }.returns(m2)
-        every { storage.getCollection() }.returns(linkedMapOf(1 to m1))
+        every { interactor.getMusicBand() }.returns(m1)
 
-//        val replaceIfLowerCommand = ReplaceIfLowe(interactor, storage)
-//        replaceIfLowerCommand.execute()
+        storage.insert(1,m2)
 
-        assertEquals(m2, storage.getCollection()[1])
+        val replaceIfLowerCommand = ReplaceIfLowe(interactor, storage)
+        replaceIfLowerCommand.execute()
+
+        assertEquals(m1, storage.getCollection()[1])
     }
 }

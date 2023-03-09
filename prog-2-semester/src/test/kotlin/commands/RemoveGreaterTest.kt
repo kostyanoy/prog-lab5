@@ -14,7 +14,7 @@ internal class RemoveGreaterTest {
     private val m1 = MusicBand("name1", Coordinates(1.0F, 1.0), 1, 1, "", MusicGenre.HIP_HOP, null)
     private val m2 = MusicBand("name2", Coordinates(2.0F, 2.0), 2, 2, "", MusicGenre.POST_PUNK, null)
     @Test
-    fun `RemoveGreater removes all elements with greater keys`() {
+    fun `RemoveGreater removes an element if it is greater than the given one`() {
         val interactor = mockk<Interactor>(relaxed = true)
         val storage = StorageManager()
 
