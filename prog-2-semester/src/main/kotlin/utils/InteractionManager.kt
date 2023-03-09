@@ -5,6 +5,14 @@ import data.MusicGenre
 import exceptions.FileException
 import utils.file.FileManager
 
+/**
+ * Implements [Interactor] interface. Executes load command on start
+ *
+ * @param userManager used to show messages to user and get input from user
+ * @param saver used to load and save collection
+ * @param fileManager used to ececute command file
+ * @param storage used to interact with collection
+ */
 class InteractionManager(
     private val userManager: ReaderWriter,
     private val saver: Saver,

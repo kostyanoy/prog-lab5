@@ -5,20 +5,32 @@ import kotlinx.serialization.Serializable
 import java.time.ZonedDateTime
 import kotlin.random.Random
 
+/**
+ * Data class, represents the album, implements [Comparable] by comparing id
+ *
+ * @param name the name of band, should not be empty
+ * @param coordinates the current position of band
+ * @param numberOfParticipants the current number of participants, should be > 0
+ * @param albumsCount the number of albums created by the band, can be null, should be > 0
+ * @param description the description of band
+ * @param genre the main genre of songs
+ * @param bestAlbum the most listened album of band
+ * @param id automatically generated value. Can vary from 0 to [Int.MAX_VALUE]
+ * @param creationTime the dateTime of band creation
+ */
 @Serializable
 data class MusicBand(
-    val name: String, //Поле не может быть null, Строка не может быть пустой
-    val coordinates: Coordinates, //Поле не может быть null
-    val numberOfParticipants: Int, //Значение поля должно быть больше 0
-    val albumsCount: Long?, //Поле может быть null, Значение поля должно быть больше 0
-    val description: String, //Поле не может быть null
-    val genre: MusicGenre,  //Поле не может быть null
-    val bestAlbum: Album?, //Поле может быть null
+    val name: String,
+    val coordinates: Coordinates,
+    val numberOfParticipants: Int,
+    val albumsCount: Long?,
+    val description: String,
+    val genre: MusicGenre,
+    val bestAlbum: Album?,
     val id: Int = generateId(),
     @Contextual
     val creationTime: ZonedDateTime = ZonedDateTime.now()
 ) : Comparable<MusicBand> {
-
 
     override fun compareTo(other: MusicBand): Int {
         return id - other.id
@@ -30,7 +42,6 @@ data class MusicBand(
  *
  * @return random Int from 0 to [Int.MAX_VALUE]
  */
-
 fun generateId(): Int {
     return Random.nextInt(0, Int.MAX_VALUE)
 }

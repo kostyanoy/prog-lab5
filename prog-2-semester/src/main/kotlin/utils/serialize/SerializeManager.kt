@@ -7,7 +7,9 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-
+/**
+ * Implements [Serializer] interface with JSON serialization
+ */
 class SerializeManager : Serializer {
     private val module = SerializersModule {
         contextual(KZonedDateTimeSerializer)
@@ -18,6 +20,6 @@ class SerializeManager : Serializer {
     override fun serialize(collection: LinkedHashMap<Int, MusicBand>) =
         serializer.encodeToString(collection)
 
-    override fun deserialize(json: String) =
-        serializer.decodeFromString<LinkedHashMap<Int, MusicBand>>(json)
+    override fun deserialize(serialized: String) =
+        serializer.decodeFromString<LinkedHashMap<Int, MusicBand>>(serialized)
 }
