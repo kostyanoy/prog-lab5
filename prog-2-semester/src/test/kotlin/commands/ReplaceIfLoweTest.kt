@@ -11,8 +11,8 @@ import utils.Interactor
 import utils.StorageManager
 
 internal class ReplaceIfLoweTest {
-    private val m1 = MusicBand("name1", Coordinates(1.0F, 1.0), 1, 1, "", MusicGenre.HIP_HOP, null)
-    private val m2 = MusicBand("name2", Coordinates(2.0F, 2.0), 2, 2, "", MusicGenre.POST_PUNK, null)
+    private val m1 = MusicBand("name1", Coordinates(1.0F, 1.0), 1, 1, "", MusicGenre.HIP_HOP, null, id = 1)
+    private val m2 = MusicBand("name2", Coordinates(2.0F, 2.0), 2, 2, "", MusicGenre.POST_PUNK, null, id = 2)
 
     @Test
     fun `Replace MusicBand if user element is lower than current element`() {
