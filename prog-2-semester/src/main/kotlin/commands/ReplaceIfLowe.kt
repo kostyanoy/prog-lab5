@@ -1,5 +1,6 @@
 package commands
 
+import exceptions.ParameterException
 import utils.*
 
 /**
@@ -15,7 +16,10 @@ class ReplaceIfLowe(interactor: Interactor, storage: Storage) : Command(interact
         val userElement = interactor.getMusicBand()
         if (userElement < collection[userKey]!!) {
             storage.update(userKey, userElement)
+        } else if (userKey !in collection.keys) {
+            throw ParameterException("Элемента с таким ключом не существует")
         }
     }
 }
+
 
