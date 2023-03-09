@@ -6,7 +6,7 @@ import utils.*
 /**
  * The command adds a new element with the specified key
  *
- * @exception [ParameterException] used if the element with the specified key does not exist
+ * @exception [ParameterException] used if the element with the specified key already exist
  */
 class Insert(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
