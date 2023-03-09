@@ -5,6 +5,12 @@ import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
 
+/**
+ * Implements [Validator] interface for getting values from user. Repeats the input process until user give correct value
+ *
+ * @param interactor used to show messages to user
+ * @param userManager used to get input from user
+ */
 class ValidationManager(
     private val interactor: Interactor,
     private val userManager: ReaderWriter

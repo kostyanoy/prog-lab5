@@ -6,6 +6,14 @@ import data.MusicBand
 import data.MusicGenre
 import exceptions.CommandFileException
 
+/**
+ * Executes commands from the file
+ *
+ * @param interactor delegates to this most of the methods
+ * @param storage used to work with collection
+ * @param lines have all lines from the command file
+ * @throws [CommandFileException] if exception occurred
+ */
 class FileInteractor(
     private val interactor: Interactor,
     private val storage: Storage,
@@ -15,6 +23,9 @@ class FileInteractor(
     var lastArgument: String? = null
     val commandManager = CommandManager(this, storage)
 
+    /**
+     * Starts executing commands from file
+     */
     override fun start() {
         while (hasNext()) {
             interact(lines[index])
@@ -43,7 +54,6 @@ class FileInteractor(
             throw CommandFileException(e.message)
         }
     }
-
 
     override fun getString(): String {
         return lastArgument ?: throw CommandFileException("Нет аргумента")
@@ -80,10 +90,16 @@ class FileInteractor(
         )
     }
 
+    /**
+     * @return next line of the command file
+     */
     fun next(): String {
         if (hasNext()) return lines[index++]
         throw CommandFileException("Недостаточно строк")
     }
 
+    /**
+     * Check if there is next line of the command file
+     */
     fun hasNext(): Boolean = (index < lines.count())
 }

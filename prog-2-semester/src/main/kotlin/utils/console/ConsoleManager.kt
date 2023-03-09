@@ -2,6 +2,9 @@ package utils.console
 
 import utils.ReaderWriter
 
+/**
+ * Implements the [ReaderWriter] by interacting with the console with build-in methods
+ */
 class ConsoleManager : ReaderWriter {
     override fun readLine(): String = readln()
     override fun writeLine(text: String) = println(text)
