@@ -13,7 +13,7 @@ class RemoveGreater(interactor: Interactor, storage: Storage) : Command(interact
         val collection = storage.getCollection()
         val useElement = interactor.getMusicBand()
         for (key in collection.keys) {
-            if (useElement > collection[key]!!) {
+            if (useElement < collection[key]!!) {
                 storage.removeKey(key)
             }
         }
