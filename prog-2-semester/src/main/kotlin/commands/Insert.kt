@@ -12,7 +12,7 @@ class Insert : UndoableCommand() {
         interactor.showMessage("Выполняется команда insert")
         val userKey = interactor.getInt()
         previousKey = userKey
-        val collection = storage.getCollection()
+        val collection = storage.getCollection { true }
         if (userKey in collection.keys) {
             throw ParameterException("Элемент с таким ключом уже существует")
         }

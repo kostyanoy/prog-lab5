@@ -15,11 +15,11 @@ import utils.file.FileManager
  */
 class InteractionManager(
     private val userManager: ReaderWriter,
-    private val saver: Saver<LinkedHashMap<Int, MusicBand>,
+    private val saver: Saver<LinkedHashMap<Int, MusicBand>>,
     private val fileManager: FileManager,
     private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
 ) : Interactor {
-    private val commandManager: CommandManager = CommandManager(this, storage)
+    private val commandManager: CommandManager = CommandManager()
     private val validator = ValidationManager(this, userManager)
     private val invitation = ">>>"
     private var isActive = true

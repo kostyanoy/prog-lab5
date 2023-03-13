@@ -35,8 +35,12 @@ internal class InsertTest : KoinComponent {
         val insertCommand = Insert()
         insertCommand.execute()
 
+<<<<<<< HEAD
         val storage = inject<StorageManager>()
         assertEquals(m, inject<StorageManager>().getCollection()[1])
+=======
+        assertEquals(m, storage.getCollection { true }[1])
+>>>>>>> bfee7e0 (Storage.getCollection now takes lambda for filtering values)
     }
 
     @Test

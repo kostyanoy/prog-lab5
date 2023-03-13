@@ -16,12 +16,12 @@ import exceptions.CommandFileException
  */
 class FileInteractor(
     private val interactor: Interactor,
-    private val storage: Storage,
+    private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
     private val lines: List<String>
 ) : Interactor by interactor {
     var index = 0
     var lastArgument: String? = null
-    val commandManager = CommandManager(this, storage)
+    val commandManager = CommandManager()
 
     /**
      * Starts executing commands from file
