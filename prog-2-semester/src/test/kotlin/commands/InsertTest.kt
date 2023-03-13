@@ -26,7 +26,7 @@ internal class InsertTest {
         val insertCommand = Insert(interactor, storage)
         insertCommand.execute()
 
-        assertEquals(m, storage.getCollection()[1])
+        assertEquals(m, storage.getCollection { true }[1])
     }
 
     @Test

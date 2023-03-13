@@ -1,6 +1,7 @@
 package commands
 
-import utils.*
+import utils.Interactor
+import utils.Storage
 
 /**
  * The command removes from the collection all items that exceed the specified
@@ -10,12 +11,8 @@ import utils.*
 class RemoveGreater(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
         interactor.showMessage("Выполняется команда remove_greater")
-        val collection = storage.getCollection()
-        val useElement = interactor.getMusicBand()
-        for (key in collection.keys) {
-            if (useElement < collection[key]!!) {
-                storage.removeKey(key)
-            }
-        }
+        val userElement = interactor.getMusicBand()
+        storage.getCollection { userElement < value }
+            .forEach { storage.removeKey(it.key) }
     }
 }

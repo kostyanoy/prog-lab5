@@ -1,7 +1,8 @@
 package commands
 
 import exceptions.ParameterException
-import utils.*
+import utils.Interactor
+import utils.Storage
 
 /**
  * The command adds a new element with the specified key
@@ -12,7 +13,7 @@ class Insert(interactor: Interactor, storage: Storage) : Command(interactor, sto
     override fun execute() {
         interactor.showMessage("Выполняется команда insert")
         val userKey = interactor.getInt()
-        val collection = storage.getCollection()
+        val collection = storage.getCollection { true }
         if (userKey in collection.keys) {
             throw ParameterException("Элемент с таким ключом уже существует")
         }

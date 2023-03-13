@@ -29,7 +29,7 @@ internal class RemoveKeyTest {
         val removeKeyCommand = RemoveKey(interactor, storage)
         removeKeyCommand.execute()
 
-        assertNull(storage.getCollection()[2])
+        assertNull(storage.getCollection { true }[2])
     }
 
     @Test

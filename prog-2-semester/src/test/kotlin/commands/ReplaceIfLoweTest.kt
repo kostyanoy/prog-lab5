@@ -22,11 +22,11 @@ internal class ReplaceIfLoweTest {
         every { interactor.getInt() }.returns(1)
         every { interactor.getMusicBand() }.returns(m1)
 
-        storage.insert(1,m2)
+        storage.insert(1, m2)
 
         val replaceIfLowerCommand = ReplaceIfLowe(interactor, storage)
         replaceIfLowerCommand.execute()
 
-        assertEquals(m1, storage.getCollection()[1])
+        assertEquals(m1, storage.getCollection { true }[1])
     }
 }

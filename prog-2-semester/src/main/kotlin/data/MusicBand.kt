@@ -3,7 +3,6 @@ package data
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.ZonedDateTime
-import kotlin.random.Random
 
 /**
  * Data class, represents the album, implements [Comparable] by comparing id
@@ -15,7 +14,7 @@ import kotlin.random.Random
  * @param description the description of band
  * @param genre the main genre of songs
  * @param bestAlbum the most listened album of band
- * @param id automatically generated value. Can vary from 0 to [Int.MAX_VALUE]
+ * @param id automatically generated value
  * @param creationTime the dateTime of band creation
  */
 @Serializable
@@ -27,7 +26,7 @@ data class MusicBand(
     val description: String,
     val genre: MusicGenre,
     val bestAlbum: Album?,
-    val id: Int = generateId(),
+    val id: Int = generateId(arrayOf(name, description, genre.toString())),
     @Contextual
     val creationTime: ZonedDateTime = ZonedDateTime.now()
 ) : Comparable<MusicBand> {
@@ -40,8 +39,8 @@ data class MusicBand(
 /**
  * Function used to generate id for MusicBand class
  *
- * @return random Int from 0 to [Int.MAX_VALUE]
+ * @return hashCode based on name, description, genre
  */
-fun generateId(): Int {
-    return Random.nextInt(0, Int.MAX_VALUE)
+fun generateId(array: Array<String>): Int {
+    return array.contentHashCode()
 }

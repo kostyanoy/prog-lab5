@@ -1,7 +1,8 @@
 package commands
 
 import exceptions.ParameterException
-import utils.*
+import utils.Interactor
+import utils.Storage
 
 /**
  * The command replaces the value by the key if the new value is less than the old one
@@ -12,12 +13,12 @@ import utils.*
 class ReplaceIfLowe(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
         interactor.showMessage("Выполняется команда replace_if_lowe")
-        val collection = storage.getCollection()
         val userKey = interactor.getInt()
-        val userElement = interactor.getMusicBand()
+        val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
+        val userElement = interactor.getMusicBand()
         if (userElement < collection[userKey]!!) {
             storage.update(userKey, userElement)
         }

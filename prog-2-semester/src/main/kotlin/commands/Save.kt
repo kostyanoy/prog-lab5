@@ -1,6 +1,7 @@
 package commands
 
-import utils.*
+import utils.Interactor
+import utils.Storage
 
 /**
  * The command saves the collection to a file
@@ -8,6 +9,6 @@ import utils.*
 class Save(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
     override fun execute() {
         interactor.showMessage("Выполняется команда save")
-        interactor.save(storage.getCollection())
+        interactor.save(storage.getCollection { true })
     }
 }
