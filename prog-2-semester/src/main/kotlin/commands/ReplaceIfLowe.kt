@@ -11,12 +11,12 @@ import exceptions.ParameterException
 class ReplaceIfLowe: StorageCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда replace_if_lowe")
-        val collection = storage.getCollection()
         val userKey = interactor.getInt()
-        val userElement = interactor.getMusicBand()
+        val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
+        val userElement = interactor.getMusicBand()
         if (userElement < collection[userKey]!!) {
             storage.update(userKey, userElement)
         }

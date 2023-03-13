@@ -8,14 +8,12 @@ package commands
 class RemoveGreater : UndoCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда remove_greater")
-        val collection = storage.getCollection()
         val userElement = interactor.getMusicBand()
-        for (key in collection.keys) {
-            if (userElement < collection[key]!!) {
-                previousKey = key
-                storage.removeKey(key)
+        storage.getCollection { userElement < value }
+            .forEach {
+                previousKey = it.key
+                storage.removeKey(it.key)
             }
-        }
     }
 
     override fun undo() {

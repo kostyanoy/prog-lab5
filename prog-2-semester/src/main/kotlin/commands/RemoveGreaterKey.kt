@@ -8,15 +8,12 @@ package commands
 class RemoveGreaterKey : UndoCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда remove_greater_key")
-        val collection = storage.getCollection()
         val userKey = interactor.getInt()
-        for (key in collection.keys) {
-            if (key > userKey) {
-                previousKey = userKey
-                previousElement = collection[userKey]
-                storage.removeKey(key)
-            }
-        }
+        storage.getCollection { userKey < key }
+            .forEach {
+                previousKey = it.key
+                previousElement = it.value
+                storage.removeKey(it.key) }
     }
     override fun undo() {
         interactor.showMessage("Отменяется команда remove_greater_key")

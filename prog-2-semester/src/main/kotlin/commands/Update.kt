@@ -11,7 +11,7 @@ class Update : UndoCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда update")
         val userKey = interactor.getInt()
-        val collection = storage.getCollection()
+        val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
