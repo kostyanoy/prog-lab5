@@ -15,18 +15,16 @@ import utils.file.FileManager
  */
 class InteractionManager(
     private val userManager: ReaderWriter,
-    private val saver: Saver,
+    private val saver: Saver<LinkedHashMap<Int, MusicBand>,
     private val fileManager: FileManager,
-    private val storage: Storage,
+    private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
 ) : Interactor {
-
     private val commandManager: CommandManager = CommandManager(this, storage)
     private val validator = ValidationManager(this, userManager)
     private val invitation = ">>>"
     private var isActive = true
     private var lastArgument: String? = null
     private val executingFiles = ArrayDeque<String>()
-
     override fun start() {
         try {
             commandManager.getCommand("load").execute()
@@ -72,7 +70,7 @@ class InteractionManager(
             showMessage("Слишком много аргументов в строке")
             return
         }
-
+            //костя моментс
         try {
             val command = commandManager.getCommand(input[0])
             lastArgument = if (input.count() == 2) input[1] else null

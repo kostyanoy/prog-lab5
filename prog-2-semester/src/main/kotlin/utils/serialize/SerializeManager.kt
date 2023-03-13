@@ -10,7 +10,7 @@ import kotlinx.serialization.modules.contextual
 /**
  * Implements [Serializer] interface with JSON serialization
  */
-class SerializeManager : Serializer {
+class SerializeManager : Serializer<LinkedHashMap<Int, MusicBand>> {
     private val module = SerializersModule {
         contextual(KZonedDateTimeSerializer)
     }

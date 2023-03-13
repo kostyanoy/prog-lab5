@@ -6,7 +6,7 @@ import data.MusicGenre
 /**
  * Interface for connecting parts of the program
  */
-interface Interactor : Saver, Validator {
+interface Interactor : Saver<LinkedHashMap<Int, MusicBand>>, Validator{
     /**
      * Starts the interaction with the user
      */

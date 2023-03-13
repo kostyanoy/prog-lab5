@@ -8,7 +8,6 @@ import org.junit.jupiter.api.assertThrows
 import utils.CommandManager
 import utils.Interactor
 import utils.StorageManager
-
 class CommandManagerTest {
     @Test
     fun `Get existing command`() {

@@ -1,12 +1,9 @@
 package commands
 
-import utils.Interactor
-import utils.Storage
-
 /**
  * The command displays help for available commands
  */
-class Help(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
+class Help : Command() {
     override fun execute() {
         interactor.showMessage(
             "Выполняется команда help" +
@@ -29,3 +26,4 @@ class Help(interactor: Interactor, storage: Storage) : Command(interactor, stora
         )
     }
 }
+//getDisc

@@ -1,14 +1,13 @@
 package commands
 
 import exceptions.ParameterException
-import utils.*
 
 /**
  * The command that updates the value of a collection item whose id is equal to the specified one
  *
  * @exception [ParameterException] used if the element with the specified key does not exist
  */
-class Update(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
+class Update : UndoCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда update")
         val userKey = interactor.getInt()
@@ -16,6 +15,12 @@ class Update(interactor: Interactor, storage: Storage) : Command(interactor, sto
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
-        storage.update(interactor.getInt(), interactor.getMusicBand())
+        previousKey = userKey
+        previousElement = collection[userKey]
+        storage.update(userKey, interactor.getMusicBand())
+    }
+    override fun undo() {
+        interactor.showMessage("Отменяется команда update")
+        previousKey?.let { previousElement?.let { it1 -> storage.update(it, it1) } }
     }
 }

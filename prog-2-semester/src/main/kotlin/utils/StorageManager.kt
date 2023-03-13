@@ -8,7 +8,7 @@ import java.time.LocalDateTime
  *
  * @property [LocalDateTime] contains the initialization date
  */
-class StorageManager : Storage {
+class StorageManager : Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand> {
     private val date: LocalDateTime = LocalDateTime.now()
     val musicBandCollection = LinkedHashMap<Int, MusicBand>()
 
@@ -50,6 +50,7 @@ class StorageManager : Storage {
     override fun getCollection(): LinkedHashMap<Int, MusicBand> {
         return musicBandCollection
     }
+
 }
 
 

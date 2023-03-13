@@ -1,22 +1,20 @@
 package utils
 
-import data.MusicBand
-
 /**
  * Saves and loads [LinkedHashMap] collection
  */
-interface Saver {
+interface Saver<T> {
     /**
      * Save [collection] for loading in the future
      *
      * @param collection that must be saved
      */
-    fun save(collection: LinkedHashMap<Int, MusicBand>)
+    fun save(collection: T)
 
     /**
      * Loads saved [LinkedHashMap] collection
      *
      * @return loaded previously saved collection
      */
-    fun load(): LinkedHashMap<Int, MusicBand>
+    fun load(): T
 }

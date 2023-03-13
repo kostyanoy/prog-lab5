@@ -1,5 +1,6 @@
 package commands
 
+import data.MusicBand
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
@@ -14,11 +15,11 @@ internal class ExecuteScriptTest{
     @Test
     fun `Prevent cycle of files`() {
         val interactor = mockk<Interactor>(relaxed = true)
-        val storage = mockk<Storage>()
+        val storage = mockk<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>>()
 
         every { interactor.getString() } returns "src/test/kotlin/script1.txt"
 
-        val command = ExecuteScript(interactor, storage)
+        val command = ExecuteScript()
 
         assertTimeout(Duration.ofSeconds(1), Executable { command.execute() })
     }

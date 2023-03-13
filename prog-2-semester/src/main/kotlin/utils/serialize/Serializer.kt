@@ -5,14 +5,14 @@ import data.MusicBand
 /**
  * Interface for serialization of [LinkedHashMap]
  */
-interface Serializer {
+interface Serializer<T> {
     /**
      * Serialize [LinkedHashMap] collection to [String]
      *
      * @param collection the [LinkedHashMap] collection that will be serialized
      * @return serialized [String]
      */
-    fun serialize(collection: LinkedHashMap<Int, MusicBand>): String
+    fun serialize(collection: T): String
 
     /**
      * Deserialize [LinkedHashMap] collection from [String]
@@ -20,5 +20,5 @@ interface Serializer {
      * @param serialized the serialized [String] that will be deserialized
      * @return deserialized [LinkedHashMap] collection
      */
-    fun deserialize(serialized: String): LinkedHashMap<Int, MusicBand>
+    fun deserialize(serialized: String): T
 }

@@ -1,7 +1,6 @@
 package commands
 
 import exceptions.ParameterException
-import utils.*
 
 /**
  * The command replaces the value by the key if the new value is less than the old one
@@ -9,7 +8,7 @@ import utils.*
  * The condition is used to check the value by the key
  * @exception [ParameterException] used if the element with the specified key does not exist
  */
-class ReplaceIfLowe(interactor: Interactor, storage: Storage) : Command(interactor, storage) {
+class ReplaceIfLowe: StorageCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда replace_if_lowe")
         val collection = storage.getCollection()

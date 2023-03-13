@@ -14,9 +14,9 @@ import utils.serialize.Serializer
  */
 class FileSaver(
     private val pathToSaveFile: String = "save.txt",
-    private val serializer: Serializer = SerializeManager(),
+    private val serializer: Serializer<LinkedHashMap<Int, MusicBand>> = SerializeManager(),
     private val fileManager: FileManager = FileManager()
-) : Saver {
+) : Saver<LinkedHashMap<Int, MusicBand>> {
     /**
      * Loads the [LinkedHashMap] collection from the save file
      *

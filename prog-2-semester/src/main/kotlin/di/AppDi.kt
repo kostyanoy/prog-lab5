@@ -1,5 +1,6 @@
 package di
 
+import data.MusicBand
 import org.koin.dsl.module
 import utils.*
 import utils.console.ConsoleManager
@@ -13,11 +14,11 @@ val appModule = module {
         ConsoleManager()
     }
 
-    factory<Serializer> {
+    factory<Serializer<LinkedHashMap<Int, MusicBand>>> {
         SerializeManager()
     }
 
-    factory<Saver> {
+    factory<Saver<LinkedHashMap<Int, MusicBand>>> {
         FileSaver("save.txt", serializer = get(), fileManager = get())
     }
 
@@ -25,11 +26,11 @@ val appModule = module {
         FileManager()
     }
 
-    single<Storage> {
+    single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> {
         StorageManager()
     }
-
-    factory<Interactor> {
+        //да
+    single<Interactor> {
         InteractionManager(userManager = get(), saver = get(), fileManager = get(), storage = get())
     }
 }
