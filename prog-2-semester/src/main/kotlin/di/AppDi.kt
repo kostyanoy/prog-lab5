@@ -26,6 +26,14 @@ val appModule = module {
         FileManager()
     }
 
+    factory<Validator> {
+        ValidationManager(interactor = get(), userManager = get())
+    }
+
+    factory {
+        CommandManager()
+    }
+
     single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> {
         StorageManager()
     }

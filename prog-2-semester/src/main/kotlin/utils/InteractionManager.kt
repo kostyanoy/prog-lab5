@@ -3,6 +3,8 @@ package utils
 import data.MusicBand
 import data.MusicGenre
 import exceptions.FileException
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import utils.file.FileManager
 
 /**
@@ -13,14 +15,15 @@ import utils.file.FileManager
  * @param fileManager used to ececute command file
  * @param storage used to interact with collection
  */
-class InteractionManager(
+class InteractionManager (
     private val userManager: ReaderWriter,
     private val saver: Saver<LinkedHashMap<Int, MusicBand>>,
     private val fileManager: FileManager,
     private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
-) : Interactor {
-    private val commandManager: CommandManager = CommandManager()
-    private val validator = ValidationManager(this, userManager)
+) : KoinComponent, Interactor, Saver<LinkedHashMap<Int, MusicBand>> by saver {
+
+    private val validator: ValidationManager by inject()
+    private val commandManager: CommandManager by inject()
     private val invitation = ">>>"
     private var isActive = true
     private var lastArgument: String? = null
@@ -42,8 +45,6 @@ class InteractionManager(
         isActive = false
     }
 
-    override fun save(collection: LinkedHashMap<Int, MusicBand>) = saver.save(collection)
-    override fun load(): LinkedHashMap<Int, MusicBand> = saver.load()
     override fun showMessage(message: String) = userManager.writeLine(message)
     override fun showInvitation(message: String) = userManager.write(message)
 
