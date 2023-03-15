@@ -7,7 +7,7 @@ import exceptions.ParameterException
  *
  * @exception [ParameterException] used if the element with the specified key already exist
  */
-class Insert : UndoCommand() {
+class Insert : UndoableCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда insert")
         val userKey = interactor.getInt()
