@@ -1,1 +1,0 @@
-execute_script src/test/kotlin/script1.txt

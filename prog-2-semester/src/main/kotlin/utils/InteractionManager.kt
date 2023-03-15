@@ -22,7 +22,7 @@ class InteractionManager (
     private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
 ) : KoinComponent, Interactor, Saver<LinkedHashMap<Int, MusicBand>> by saver {
 
-    private val validator: ValidationManager by inject()
+    private val validator: Validator by inject()
     private val commandManager: CommandManager by inject()
     private val invitation = ">>>"
     private var isActive = true
