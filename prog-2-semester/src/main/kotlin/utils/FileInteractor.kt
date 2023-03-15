@@ -5,6 +5,8 @@ import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
 import exceptions.CommandFileException
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * Executes commands from the file
@@ -18,10 +20,10 @@ class FileInteractor(
     private val interactor: Interactor,
     private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
     private val lines: List<String>
-) : Interactor by interactor {
+) : KoinComponent, Interactor by interactor {
     var index = 0
     var lastArgument: String? = null
-    val commandManager = CommandManager()
+    val commandManager: CommandManager by inject()
 
     /**
      * Starts executing commands from file

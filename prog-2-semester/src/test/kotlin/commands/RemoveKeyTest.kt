@@ -6,40 +6,54 @@ import data.MusicGenre
 import exceptions.ParameterException
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.RegisterExtension
+import org.koin.core.component.inject
+import org.koin.dsl.module
+import org.koin.test.KoinTest
+import org.koin.test.junit5.KoinTestExtension
 import utils.Interactor
+import utils.Storage
 import utils.StorageManager
 
-internal class RemoveKeyTest {
+internal class RemoveKeyTest : KoinTest {
     private val m1 = MusicBand("name1", Coordinates(1.0F, 1.0), 1, 1, "", MusicGenre.HIP_HOP, null)
     private val m2 = MusicBand("name2", Coordinates(2.0F, 2.0), 2, 2, "", MusicGenre.POST_PUNK, null)
 
+    private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand> by inject()
+
+    @JvmField
+    @RegisterExtension
+    val koinTestExtension = KoinTestExtension.create {
+        modules(module {
+            single<Interactor> {
+                val interactor = mockk<Interactor>(relaxed = true)
+                every { interactor.getInt() }.returns(2)
+                interactor
+            }
+            single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> { StorageManager() }
+        })
+    }
+
     @Test
     fun `Remove key from non-empty collection`() {
-        val interactor = mockk<Interactor>(relaxed = true)
-        val storage = StorageManager()
-
         storage.insert(1, m1)
         storage.insert(2, m2)
 
-        every { interactor.getInt() }.returns(2)
-
-        val removeKeyCommand = RemoveKey(interactor, storage)
+        val removeKeyCommand = RemoveKey()
         removeKeyCommand.execute()
 
-        assertNull(storage.getCollection { true }[2])
+        assertEquals(1, storage.getCollection { true }.count())
+        assertEquals(m1, storage.getCollection { true }[1])
+        Assertions.assertFalse(storage.getCollection { true }.containsKey(2))
     }
 
     @Test
     fun `Remove key from empty collection throws ParameterException`() {
-        val interactor = mockk<Interactor>(relaxed = true)
-        val storage = StorageManager()
-
-        every { interactor.getInt() }.returns(1)
-
-        val removeKeyCommand = RemoveKey(interactor, storage)
+        val removeKeyCommand = RemoveKey()
 
         assertThrows<ParameterException> { removeKeyCommand.execute() }
     }
