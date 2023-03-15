@@ -1,5 +1,6 @@
 package di
 
+import commands.CommandHistory
 import data.MusicBand
 import org.koin.dsl.module
 import utils.*
@@ -25,11 +26,13 @@ val appModule = module {
     factory {
         FileManager()
     }
+    single {
+        CommandHistory()
+    }
 
     single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> {
         StorageManager()
     }
-        //да
     single<Interactor> {
         InteractionManager(userManager = get(), saver = get(), fileManager = get(), storage = get())
     }

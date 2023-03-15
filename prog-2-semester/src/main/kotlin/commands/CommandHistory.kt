@@ -1,9 +1,11 @@
 package commands
 
 class CommandHistory {
-    private val history = mutableListOf<UndoCommand>()
-    fun executeCommand(command: UndoCommand) {
-        command.execute()
+    private val history = mutableListOf<UndoableCommand>()
+    fun executedCommand(command: Command) {
+        if(command !is UndoableCommand){
+            return
+        }
         history.add(command)
     }
     fun undoLastCommand() {

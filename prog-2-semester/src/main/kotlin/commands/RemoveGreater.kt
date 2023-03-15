@@ -5,7 +5,7 @@ package commands
  *
  * The loop and condition are used to validate the key
  */
-class RemoveGreater : UndoCommand() {
+class RemoveGreater : UndoableCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда remove_greater")
         val userElement = interactor.getMusicBand()

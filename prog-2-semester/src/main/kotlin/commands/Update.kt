@@ -7,7 +7,7 @@ import exceptions.ParameterException
  *
  * @exception [ParameterException] used if the element with the specified key does not exist
  */
-class Update : UndoCommand() {
+class Update : UndoableCommand() {
     override fun execute() {
         interactor.showMessage("Выполняется команда update")
         val userKey = interactor.getInt()
