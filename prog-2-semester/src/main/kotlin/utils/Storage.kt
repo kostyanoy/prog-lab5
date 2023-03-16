@@ -1,7 +1,5 @@
 package utils
 
-import data.MusicBand
-
 /**
  * Interface for interacting with the collection
  */

@@ -3,11 +3,19 @@ package commands
 import exceptions.ParameterException
 
 /**
- * The command adds a new element with the specified key
+ * The command adds a new element with the specified key.
  *
- * @exception [ParameterException] used if the element with the specified key already exist
+ * @exception [ParameterException] used if the element with the specified key already exist.
  */
 class Insert : UndoableCommand() {
+    /**
+    Returns a description of the command.
+     */
+    override fun getDescription() {
+
+        interactor.showMessage("insert : добавить новый элемент с заданным ключом")
+    }
+
     override fun execute() {
         interactor.showMessage("Выполняется команда insert")
         val userKey = interactor.getInt()
@@ -18,6 +26,7 @@ class Insert : UndoableCommand() {
         }
         storage.insert(userKey, interactor.getMusicBand())
     }
+
     override fun undo() {
         interactor.showMessage("Отменяется команда insert")
         previousKey?.let { storage.removeKey(it) }

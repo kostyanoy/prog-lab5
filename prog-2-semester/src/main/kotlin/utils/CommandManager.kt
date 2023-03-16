@@ -7,7 +7,7 @@ import org.koin.core.component.KoinComponent
 /**
  * The class is used to refer to commands
  */
-class CommandManager : KoinComponent {
+class CommandManager() : KoinComponent {
     val commands = mapOf<String, Command>(
         "help" to Help(),
         "info" to Info(),
@@ -24,7 +24,8 @@ class CommandManager : KoinComponent {
         "replace_if_lowe" to ReplaceIfLowe(),
         "remove_greater_key" to RemoveGreaterKey(),
         "count_greater_than_description" to CountGreaterThanDescription(),
-        "filter_less_than_genre" to FilterLessThanGenre()
+        "filter_less_than_genre" to FilterLessThanGenre(),
+        "undo" to Undo()
     )
 
     /**
