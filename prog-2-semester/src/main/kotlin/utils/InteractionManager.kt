@@ -1,5 +1,6 @@
 package utils
 
+import commands.CommandHistory
 import data.MusicBand
 import data.MusicGenre
 import exceptions.FileException
@@ -15,7 +16,7 @@ import utils.file.FileManager
  * @param fileManager used to ececute command file
  * @param storage used to interact with collection
  */
-class InteractionManager (
+class InteractionManager(
     private val userManager: ReaderWriter,
     private val saver: Saver<LinkedHashMap<Int, MusicBand>>,
     private val fileManager: FileManager,
@@ -24,6 +25,7 @@ class InteractionManager (
 
     private val validator: Validator by inject()
     private val commandManager: CommandManager by inject()
+    private val history: CommandHistory by inject()
     private val invitation = ">>>"
     private var isActive = true
     private var lastArgument: String? = null
@@ -31,9 +33,8 @@ class InteractionManager (
     override fun start() {
         try {
             commandManager.getCommand("load").execute()
-            showMessage("Загружена коллекция из файла сохранения!")
         } catch (e: FileException) {
-            showMessage(e.message ?: "")
+            userManager.writeLine(e.message ?: "")
         }
         userManager.writeLine("Здрасьте, для вывода списка команд введите help")
         while (isActive) {
@@ -56,7 +57,7 @@ class InteractionManager (
     override fun executeCommandFile(path: String) {
         val text = fileManager.readFile(path)
         if (path in executingFiles) {
-            showMessage("Предотвращение зацикливания!")
+            userManager.writeLine("Предотвращение зацикливания!")
             return
         }
         executingFiles.add(path)
@@ -68,16 +69,23 @@ class InteractionManager (
         userManager.write(invitation)
         val input = userManager.readLine().split(" ")
         if (input.count() > 2) {
-            showMessage("Слишком много аргументов в строке")
+            userManager.writeLine("Слишком много аргументов в строке")
             return
         }
-            //костя моментс
+        //костя моментс
         try {
             val command = commandManager.getCommand(input[0])
             lastArgument = if (input.count() == 2) input[1] else null
-            command.execute()
+            history.executedCommand(command)
+            when (val result = command.execute()) {
+                is CommandResult.Failure -> userManager.writeLine("Команда ${result.commandName} завершилась ошибкой: ${result.throwable.message}")
+                is CommandResult.Success -> {
+                    userManager.writeLine("Команда ${result.commandName} исполнена.")
+                    result.message?.let { userManager.writeLine(it) }
+                }
+            }
         } catch (e: Throwable) {
-            showMessage(e.message ?: "")
+            userManager.writeLine(e.message ?: "")
         } finally {
             executingFiles.clear()
         }

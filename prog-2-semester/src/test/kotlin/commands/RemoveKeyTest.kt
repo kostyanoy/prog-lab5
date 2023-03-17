@@ -3,18 +3,18 @@ package commands
 import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
-import exceptions.ParameterException
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.koin.core.component.inject
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.junit5.KoinTestExtension
+import utils.CommandResult
 import utils.Interactor
 import utils.Storage
 import utils.StorageManager
@@ -55,6 +55,6 @@ internal class RemoveKeyTest : KoinTest {
     fun `Remove key from empty collection throws ParameterException`() {
         val removeKeyCommand = RemoveKey()
 
-        assertThrows<ParameterException> { removeKeyCommand.execute() }
+        assertTrue { removeKeyCommand.execute() is CommandResult.Failure }
     }
 }

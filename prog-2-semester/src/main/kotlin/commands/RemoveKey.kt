@@ -1,6 +1,7 @@
 package commands
 
 import exceptions.ParameterException
+import utils.CommandResult
 
 /**
  * The command removes an item from the collection by its key
@@ -8,20 +9,20 @@ import exceptions.ParameterException
  * @exception [ParameterException] used if the element with the specified key does not exist
  */
 class RemoveKey : UndoableCommand() {
-    override fun execute() {
-        interactor.showMessage("Выполняется команда removeKey")
+    override fun execute(): CommandResult {
         val userKey = interactor.getInt()
         val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
-            throw ParameterException("Элемента с таким ключом не существует")
+            return CommandResult.Failure("Remove_greater", ParameterException("Элемента с таким ключом не существует"))
         }
         previousKey = userKey
         previousElement = collection[userKey]
         storage.removeKey(interactor.getInt())
+        return CommandResult.Success("Remove_key")
     }
 
-    override fun undo() {
-        interactor.showMessage("Отменяется команда removeKey")
+    override fun undo(): CommandResult {
         previousElement?.let { storage.insert(previousKey!!, it) }
+        return CommandResult.Success("Undo Remove_key")
     }
 }

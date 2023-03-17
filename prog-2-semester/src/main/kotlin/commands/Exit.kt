@@ -1,11 +1,13 @@
 package commands
 
+import utils.CommandResult
+
 /**
  * The command terminates the program
  */
 class Exit : Command() {
-    override fun execute() {
-        interactor.showMessage("Выполняется команда exit")
+    override fun execute(): CommandResult {
         interactor.exit()
+        return CommandResult.Success("Exit")
     }
 }

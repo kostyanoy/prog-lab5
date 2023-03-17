@@ -1,5 +1,8 @@
 package commands
 
+import exceptions.CommandException
+import utils.CommandResult
+
 class CommandHistory {
     private val history = mutableListOf<UndoableCommand>()
     fun executedCommand(command: Command) {
@@ -8,10 +11,11 @@ class CommandHistory {
         }
         history.add(command)
     }
-    fun undoLastCommand() {
+    fun undoLastCommand() : CommandResult {
         if (history.isNotEmpty()) {
             val last = history.removeLast()
-            last.undo()
+            return last.undo()
         }
+        return CommandResult.Failure("Undo", CommandException("Нечего отменять"))
     }
 }

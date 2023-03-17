@@ -9,7 +9,7 @@ import data.MusicGenre
  * Implements [Validator] interface for getting values from user. Repeats the input process until user give correct value
  *
  * @param interactor used to show messages to user
- * @param userManager used to get input from user
+ * @param userManager used to get input from user and show messages
  */
 class ValidationManager(
     private val interactor: Interactor,
@@ -19,21 +19,21 @@ class ValidationManager(
     override fun getInt(): Int {
         var res: Int? = null
         while (res == null) {
-            interactor.showInvitation("Вы должны ввести аргумент типа число: ")
+            userManager.write("Вы должны ввести аргумент типа число: ")
             res = userManager.readLine().toIntOrNull()
         }
         return res
     }
 
     override fun getString(): String {
-        interactor.showInvitation("Вы должны ввести аргумент типа строка: ")
+        userManager.write("Вы должны ввести аргумент типа строка: ")
         return userManager.readLine()
     }
 
     override fun getGenre(): MusicGenre {
         var res: MusicGenre? = null
         while (res == null) {
-            interactor.showInvitation("Вы должны ввести жанр (PROGRESSIVE_ROCK, HIP_HOP, PSYCHEDELIC_CLOUD_RAP, SOUL, POST_PUNK): ")
+            userManager.write("Вы должны ввести жанр (PROGRESSIVE_ROCK, HIP_HOP, PSYCHEDELIC_CLOUD_RAP, SOUL, POST_PUNK): ")
             res = MusicGenre.valueOfOrNull(userManager.readLine().uppercase())
         }
         return res

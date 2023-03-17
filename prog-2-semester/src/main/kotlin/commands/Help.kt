@@ -1,11 +1,13 @@
 package commands
 
+import utils.CommandResult
+
 /**
  * The command displays help for available commands
  */
 class Help : Command() {
-    override fun execute() {
-        interactor.showMessage(
+    override fun execute(): CommandResult {
+        return CommandResult.Success("Help",
             "Выполняется команда help" +
                     "\nhelp : вывести справку по доступным командам" +
                     "\ninfo : вывести в стандартный поток вывода информацию о коллекции" +
