@@ -14,18 +14,22 @@ class RemoveGreater : UndoableCommand() {
     }
 
     override fun execute() {
+        previousPair.clear()
         interactor.showMessage("Выполняется команда remove_greater")
         val userElement = interactor.getMusicBand()
         storage.getCollection { userElement < value }
             .forEach {
-                previousKey = it.key
+                previousPair.add(it.key to it.value)
                 storage.removeKey(it.key)
             }
     }
 
     override fun undo() {
         interactor.showMessage("Отменяется команда remove_greater")
-        previousKey?.let { previousElement?.let { it1 -> storage.insert(it, it1) } }
+        previousPair.forEach { (key, value) ->
+            storage.insert(key, value)
+        }
+        previousPair.clear()
     }
 
 }

@@ -15,18 +15,21 @@ class Update : UndoableCommand() {
         interactor.showMessage("update : обновить значение элемента коллекции, id которого равен заданному")
     }
     override fun execute() {
+        previousPair.clear()
         interactor.showMessage("Выполняется команда update")
         val userKey = interactor.getInt()
         val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
-        previousKey = userKey
-        previousElement = collection[userKey]
+        previousPair.add(userKey to collection[userKey]!!)
         storage.update(userKey, interactor.getMusicBand())
     }
     override fun undo() {
         interactor.showMessage("Отменяется команда update")
-        previousKey?.let { previousElement?.let { it1 -> storage.update(it, it1) } }
+        previousPair.forEach { (key, value) ->
+            storage.update(key, value)
+        }
+        previousPair.clear()
     }
 }

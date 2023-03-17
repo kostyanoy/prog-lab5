@@ -12,19 +12,22 @@ class RemoveKey : UndoableCommand() {
         interactor.showMessage("removeKey : удалить элемент из коллекции по его ключу")
     }
     override fun execute() {
+        previousPair.clear()
         interactor.showMessage("Выполняется команда removeKey")
         val userKey = interactor.getInt()
         val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
             throw ParameterException("Элемента с таким ключом не существует")
         }
-        previousKey = userKey
-        previousElement = collection[userKey]
+        previousPair.add(userKey to collection[userKey]!!)
         storage.removeKey(interactor.getInt())
     }
 
     override fun undo() {
         interactor.showMessage("Отменяется команда removeKey")
-        previousElement?.let { storage.insert(previousKey!!, it) }
+        previousPair.forEach { (key, value) ->
+            storage.insert(key, value)
+        }
+        previousPair.clear()
     }
 }

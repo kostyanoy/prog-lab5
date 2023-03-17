@@ -17,19 +17,23 @@ class Insert : UndoableCommand() {
     }
 
     override fun execute() {
+        previousPair.clear()
         interactor.showMessage("Выполняется команда insert")
         val userKey = interactor.getInt()
-        previousKey = userKey
         val collection = storage.getCollection { true }
         if (userKey in collection.keys) {
             throw ParameterException("Элемент с таким ключом уже существует")
         }
+        previousPair.add(userKey to collection[userKey]!!)
         storage.insert(userKey, interactor.getMusicBand())
     }
 
     override fun undo() {
         interactor.showMessage("Отменяется команда insert")
-        previousKey?.let { storage.removeKey(it) }
+        previousPair.forEach { (key) ->
+            storage.removeKey(key)
+        }
+        previousPair.clear()
     }
 
 }
