@@ -1,12 +1,13 @@
 package commands
 
+import utils.ArgumentType
 import utils.CommandResult
 
 /**
  * The command displays help for available commands
  */
 class Help : Command() {
-    override fun execute(): CommandResult {
+    override fun execute(args: ArrayList<Any>): CommandResult {
         return CommandResult.Success("Help",
             "Выполняется команда help" +
                     "\nhelp : вывести справку по доступным командам" +
@@ -26,6 +27,10 @@ class Help : Command() {
                     "\ncount_greater_than_description : вывести количество элементов, значение поля description которых больше заданного" +
                     "\nfilter_less_than_genre : вывести элементы, значение поля genre которых меньше заданного"
         )
+    }
+
+    override fun getArgumentTypes(): Array<ArgumentType> {
+        return arrayOf()
     }
 }
 //getDisc

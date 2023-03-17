@@ -1,9 +1,9 @@
 package utils
 
+import commands.Command
 import commands.CommandHistory
 import data.MusicBand
 import data.MusicGenre
-import exceptions.FileException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import utils.file.FileManager
@@ -31,11 +31,7 @@ class InteractionManager(
     private var lastArgument: String? = null
     private val executingFiles = ArrayDeque<String>()
     override fun start() {
-        try {
-            commandManager.getCommand("load").execute()
-        } catch (e: FileException) {
-            userManager.writeLine(e.message ?: "")
-        }
+        commandManager.getCommand("load").execute(arrayListOf())
         userManager.writeLine("Здрасьте, для вывода списка команд введите help")
         while (isActive) {
             interact()
@@ -48,11 +44,6 @@ class InteractionManager(
 
     override fun showMessage(message: String) = userManager.writeLine(message)
     override fun showInvitation(message: String) = userManager.write(message)
-
-    override fun getString(): String = lastArgument ?: validator.getString()
-    override fun getInt(): Int = lastArgument?.toIntOrNull() ?: validator.getInt()
-    override fun getGenre(): MusicGenre = lastArgument?.let { MusicGenre.valueOfOrNull(it) } ?: validator.getGenre()
-    override fun getMusicBand(): MusicBand = validator.getMusicBand()
 
     override fun executeCommandFile(path: String) {
         val text = fileManager.readFile(path)
@@ -76,18 +67,36 @@ class InteractionManager(
         try {
             val command = commandManager.getCommand(input[0])
             lastArgument = if (input.count() == 2) input[1] else null
-            history.executedCommand(command)
-            when (val result = command.execute()) {
-                is CommandResult.Failure -> userManager.writeLine("Команда ${result.commandName} завершилась ошибкой: ${result.throwable.message}")
-                is CommandResult.Success -> {
-                    userManager.writeLine("Команда ${result.commandName} исполнена.")
-                    result.message?.let { userManager.writeLine(it) }
-                }
-            }
+            executeCommand(command)
         } catch (e: Throwable) {
             userManager.writeLine(e.message ?: "")
         } finally {
             executingFiles.clear()
+        }
+    }
+
+    override fun getArgs(command: Command): ArrayList<Any> {
+        val args = arrayListOf<Any>()
+        command.getArgumentTypes().forEach {
+            args.add(when (it) {
+                ArgumentType.INT -> lastArgument?.toIntOrNull() ?: validator.getInt()
+                ArgumentType.STRING -> lastArgument ?: validator.getString()
+                ArgumentType.GENRE -> lastArgument?.let { MusicGenre.valueOfOrNull(it) } ?: validator.getGenre()
+                ArgumentType.MUSIC_BAND -> validator.getMusicBand()
+            })
+        }
+        return args
+    }
+
+    override fun executeCommand(command: Command) {
+        val args = getArgs(command)
+        when (val result = command.execute(args)) {
+            is CommandResult.Failure -> userManager.writeLine("Команда ${result.commandName} завершилась ошибкой: ${result.throwable.message}")
+            is CommandResult.Success -> {
+                userManager.writeLine("Команда ${result.commandName} исполнена.")
+                result.message?.let { userManager.writeLine(it) }
+                history.executedCommand(command)
+            }
         }
     }
 }

@@ -3,7 +3,6 @@ package commands
 import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -29,11 +28,7 @@ internal class RemoveKeyTest : KoinTest {
     @RegisterExtension
     val koinTestExtension = KoinTestExtension.create {
         modules(module {
-            single<Interactor> {
-                val interactor = mockk<Interactor>(relaxed = true)
-                every { interactor.getInt() }.returns(2)
-                interactor
-            }
+            single<Interactor> { mockk(relaxed = true) }
             single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> { StorageManager() }
         })
     }
@@ -44,7 +39,7 @@ internal class RemoveKeyTest : KoinTest {
         storage.insert(2, m2)
 
         val removeKeyCommand = RemoveKey()
-        removeKeyCommand.execute()
+        removeKeyCommand.execute(arrayListOf(2))
 
         assertEquals(1, storage.getCollection { true }.count())
         assertEquals(m1, storage.getCollection { true }[1])
@@ -52,9 +47,9 @@ internal class RemoveKeyTest : KoinTest {
     }
 
     @Test
-    fun `Remove key from empty collection throws ParameterException`() {
+    fun `Remove key from empty collection fails`() {
         val removeKeyCommand = RemoveKey()
 
-        assertTrue { removeKeyCommand.execute() is CommandResult.Failure }
+        assertTrue { removeKeyCommand.execute(arrayListOf(2)) is CommandResult.Failure }
     }
 }

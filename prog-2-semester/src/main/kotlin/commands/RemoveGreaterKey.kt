@@ -1,5 +1,6 @@
 package commands
 
+import utils.ArgumentType
 import utils.CommandResult
 
 /**
@@ -8,8 +9,8 @@ import utils.CommandResult
  * The loop and condition are used to validate the key
  */
 class RemoveGreaterKey : UndoableCommand() {
-    override fun execute(): CommandResult {
-        val userKey = interactor.getInt()
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        val userKey = args[0] as Int
         storage.getCollection { userKey < key }
             .forEach {
                 previousKey = it.key
@@ -17,6 +18,10 @@ class RemoveGreaterKey : UndoableCommand() {
                 storage.removeKey(it.key)
             }
         return CommandResult.Success("Remove_greater_key")
+    }
+
+    override fun getArgumentTypes(): Array<ArgumentType> {
+        return arrayOf(ArgumentType.INT)
     }
 
     override fun undo(): CommandResult {

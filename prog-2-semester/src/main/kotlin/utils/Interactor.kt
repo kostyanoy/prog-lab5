@@ -1,12 +1,12 @@
 package utils
 
+import commands.Command
 import data.MusicBand
-import data.MusicGenre
 
 /**
  * Interface for connecting parts of the program
  */
-interface Interactor : Saver<LinkedHashMap<Int, MusicBand>>, Validator{
+interface Interactor : Saver<LinkedHashMap<Int, MusicBand>> {
     /**
      * Starts the interaction with the user
      */
@@ -37,4 +37,6 @@ interface Interactor : Saver<LinkedHashMap<Int, MusicBand>>, Validator{
      * @param path the location of the file in the OS
      */
     fun executeCommandFile(path: String)
+    fun getArgs(command: Command): ArrayList<Any>
+    fun executeCommand(command: Command)
 }

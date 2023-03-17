@@ -1,5 +1,6 @@
 package commands
 
+import data.MusicGenre
 import utils.*
 
 /**
@@ -8,12 +9,16 @@ import utils.*
  * The condition is used to compare the [genre] field from the collection and the one set by the user
  */
 class FilterLessThanGenre : StorageCommand() {
-    override fun execute(): CommandResult {
-        val userGenre = interactor.getGenre()
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        val userGenre = args[0] as MusicGenre
         val message = buildString {
             storage.getCollection { userGenre > value.genre }
                 .forEach(::appendLine)
         }
         return CommandResult.Success("Filter_less_than_genre", message)
+    }
+
+    override fun getArgumentTypes(): Array<ArgumentType> {
+        return arrayOf(ArgumentType.GENRE)
     }
 }

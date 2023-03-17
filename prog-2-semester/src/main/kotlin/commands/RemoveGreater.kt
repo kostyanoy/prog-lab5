@@ -1,5 +1,7 @@
 package commands
 
+import data.MusicBand
+import utils.ArgumentType
 import utils.CommandResult
 
 /**
@@ -8,14 +10,18 @@ import utils.CommandResult
  * The loop and condition are used to validate the key
  */
 class RemoveGreater : UndoableCommand() {
-    override fun execute(): CommandResult {
-        val userElement = interactor.getMusicBand()
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        val userElement = args[0] as MusicBand
         storage.getCollection { userElement < value }
             .forEach {
                 previousKey = it.key
                 storage.removeKey(it.key)
             }
         return CommandResult.Success("Remove_greater")
+    }
+
+    override fun getArgumentTypes(): Array<ArgumentType> {
+        return arrayOf(ArgumentType.MUSIC_BAND)
     }
 
     override fun undo(): CommandResult {

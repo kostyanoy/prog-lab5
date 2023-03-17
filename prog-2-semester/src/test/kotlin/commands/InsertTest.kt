@@ -3,7 +3,6 @@ package commands
 import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,12 +26,7 @@ internal class InsertTest : KoinTest {
     @RegisterExtension
     val koinTestExtension = KoinTestExtension.create {
         modules(module {
-            single<Interactor> {
-                val interactor = mockk<Interactor>(relaxed = true)
-                every { interactor.getInt() }.returns(1)
-                every { interactor.getMusicBand() }.returns(m)
-                interactor
-            }
+            single<Interactor> { mockk(relaxed = true) }
             single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> { StorageManager() }
         })
     }
@@ -41,17 +35,17 @@ internal class InsertTest : KoinTest {
     @Test
     fun `Insert MusicBand into empty collection`() {
         val insertCommand = Insert()
-        insertCommand.execute()
+        insertCommand.execute(arrayListOf(1, m))
 
         assertEquals(m, storage.getCollection { true }[1])
         assertEquals(1, storage.getCollection { true }.count())
     }
 
     @Test
-    fun `Insert throws ParameterException if exists`() {
+    fun `Insert Fails if exists`() {
         val insertCommand = Insert()
-        insertCommand.execute()
+        insertCommand.execute(arrayListOf(1, m))
 
-        assertTrue { insertCommand.execute() is CommandResult.Failure }
+        assertTrue { insertCommand.execute(arrayListOf(1, m)) is CommandResult.Failure }
     }
 }

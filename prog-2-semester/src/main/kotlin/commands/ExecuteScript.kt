@@ -2,6 +2,7 @@ package commands
 
 import exceptions.FileException
 import org.jetbrains.kotlin.konan.file.File
+import utils.ArgumentType
 import utils.CommandResult
 
 /**
@@ -11,8 +12,8 @@ import utils.CommandResult
  */
 
 class ExecuteScript : Command() {
-    override fun execute(): CommandResult {
-        val path = interactor.getString()
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        val path = args[0] as String
         if (!File(path).exists) {
             return CommandResult.Failure("Execute_script", FileException("Файла команд не обнаружено"))
         }
@@ -22,5 +23,9 @@ class ExecuteScript : Command() {
             return CommandResult.Failure("Execute_script", e)
         }
         return CommandResult.Success("Execute_script")
+    }
+
+    override fun getArgumentTypes(): Array<ArgumentType> {
+        return arrayOf(ArgumentType.STRING)
     }
 }
