@@ -3,26 +3,31 @@ package commands
 import exceptions.FileException
 import org.jetbrains.kotlin.konan.file.File
 
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
  * The command reads and executes the script from the specified file.
  *
- * @exception [FileException] used if no file is found.
+ * Fails if no file is found.
  */
 
-class ExecuteScript() : Command() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("execute_script : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.")
+class ExecuteScript : Command() {
+    override fun getDescription(): String =
+        "execute_script : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме."
+
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        val path = args[0] as String
+        if (!File(path).exists) {
+            return CommandResult.Failure("Execute_script", FileException("Файла команд не обнаружено"))
+        }
+        try {
+            interactor.executeCommandFile(path)
+        } catch (e: Throwable) {
+            return CommandResult.Failure("Execute_script", e)
+        }
+        return CommandResult.Success("Execute_script")
     }
 
-    override fun execute() {
-        interactor.showMessage("Выполняется команда execute")
-        val path = interactor.getString()
-        if (!File(path).exists) {
-            throw FileException("Файла команд не обнаружено")
-        }
-        interactor.executeCommandFile(path)
-    }
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf(ArgumentType.STRING)
 }

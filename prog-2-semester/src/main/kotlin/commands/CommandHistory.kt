@@ -1,8 +1,12 @@
 package commands
 
+import exceptions.CommandException
+import utils.CommandResult
+
 /**
  * Class that stores the history of executed commands.
  */
+
 class CommandHistory {
     /**
      * List of executed commands.
@@ -23,10 +27,11 @@ class CommandHistory {
     /**
      * Undo the last executed command.
      */
-    fun undoLastCommand() {
+    fun undoLastCommand(): CommandResult {
         if (history.isNotEmpty()) {
             val last = history.removeLast()
-            last.undo()
+            return last.undo()
         }
+        return CommandResult.Failure("Undo", CommandException("Нечего отменять"))
     }
 }

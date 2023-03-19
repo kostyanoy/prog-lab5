@@ -1,35 +1,36 @@
 package commands
 
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
  * The command removes from the collection all items whose key exceeds the specified one.
  *
  * The loop and condition are used to validate the key.
  */
 class RemoveGreaterKey : UndoableCommand() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("remove_greater_key : удалить из коллекции все элементы, ключ которых превышает заданный")
-    }
+    override fun getDescription(): String =
+        "remove_greater_key : удалить из коллекции все элементы, ключ которых превышает заданный"
 
-    override fun execute() {
+    override fun execute(args: ArrayList<Any>): CommandResult {
         previousPair.clear()
-        interactor.showMessage("Выполняется команда remove_greater_key")
-        val userKey = interactor.getInt()
+        val userKey = args[0] as Int
         storage.getCollection { userKey < key }
             .forEach {
                 previousPair.add(it.key to it.value)
                 storage.removeKey(it.key)
             }
+        return CommandResult.Success("Remove_greater_key")
     }
 
-    override fun undo() {
-        interactor.showMessage("Отменяется команда remove_greater_key")
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf(ArgumentType.INT)
+
+    override fun undo(): CommandResult {
         previousPair.forEach { (key, value) ->
-            storage.insert(key, value)
+            storage.insert(key, value!!)
         }
         previousPair.clear()
+        return CommandResult.Success("Undo Remove_greater_key")
     }
 }
 

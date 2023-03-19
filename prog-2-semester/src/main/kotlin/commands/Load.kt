@@ -2,25 +2,26 @@ package commands
 
 import exceptions.FileException
 import org.jetbrains.kotlin.konan.file.File
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
  * The command loads the file with the collection
  *
- * * @exception [FileException] used if no saved file is found
+ * * Fails if no saved file is found
  */
 class Load : StorageCommand() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("load : загрузить коллекцию из файла")
-    }
-    override fun execute() {
-        interactor.showMessage("Выполняется команда load")
+    override fun getDescription(): String = "load : загрузить коллекцию из файла"
+
+    override fun execute(args: ArrayList<Any>): CommandResult {
         if (!File("save.txt").exists) {
-            throw FileException("Сохраненного файла не обнаружено")
+            return CommandResult.Failure("Load", FileException("Сохраненного файла не обнаружено"))
         }
         storage.clear()
         interactor.load()
             .forEach { storage.insert(it.key, it.value) }
+        return CommandResult.Success("Load")
     }
+
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf()
 }

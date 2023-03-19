@@ -3,7 +3,6 @@ package commands
 import data.Coordinates
 import data.MusicBand
 import data.MusicGenre
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -26,12 +25,7 @@ internal class ReplaceIfLoweTest : KoinTest {
     @RegisterExtension
     val koinTestExtension = KoinTestExtension.create {
         modules(module {
-            single<Interactor> {
-                val interactor = mockk<Interactor>(relaxed = true)
-                every { interactor.getInt() }.returns(1)
-                every { interactor.getMusicBand() }.returns(m1)
-                interactor
-            }
+            single<Interactor> { mockk(relaxed = true) }
             single<Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>> { StorageManager() }
         })
     }
@@ -41,7 +35,7 @@ internal class ReplaceIfLoweTest : KoinTest {
         storage.insert(1, m2)
 
         val replaceIfLowerCommand = ReplaceIfLowe()
-        replaceIfLowerCommand.execute()
+        replaceIfLowerCommand.execute(arrayListOf(1, m1))
 
         assertEquals(1, storage.getCollection { true }.count())
         assertEquals(m1, storage.getCollection { true }[1])

@@ -1,5 +1,6 @@
 package utils
 
+import commands.Command
 import data.Album
 import data.Coordinates
 import data.MusicBand
@@ -20,7 +21,7 @@ class FileInteractor(
     private val interactor: Interactor,
     private val storage: Storage<LinkedHashMap<Int, MusicBand>, Int, MusicBand>,
     private val lines: List<String>
-) : KoinComponent, Interactor by interactor {
+) : KoinComponent, Interactor by interactor, Validator {
     var index = 0
     var lastArgument: String? = null
     val commandManager: CommandManager by inject()
@@ -30,8 +31,7 @@ class FileInteractor(
      */
     override fun start() {
         while (hasNext()) {
-            interact(lines[index])
-            index++
+            interact(next())
         }
     }
 
@@ -49,21 +49,43 @@ class FileInteractor(
         try {
             val command = commandManager.getCommand(input[0])
             lastArgument = if (input.count() == 2) input[1] else null
-            command.execute()
+            executeCommand(command)
         } catch (e: CommandFileException) {
             throw e
-        } catch (e: Throwable){
+        } catch (e: Throwable) {
             throw CommandFileException(e.message)
         }
     }
 
-    override fun getString(): String {
-        return lastArgument ?: throw CommandFileException("Нет аргумента")
+    override fun getArgs(command: Command): ArrayList<Any> {
+        val args = arrayListOf<Any>()
+        command.getArgumentTypes().forEach {
+            args.add(
+                when (it) {
+                    ArgumentType.INT -> getInt()
+                    ArgumentType.STRING -> getString()
+                    ArgumentType.GENRE -> getGenre()
+                    ArgumentType.MUSIC_BAND -> getMusicBand()
+                }
+            )
+        }
+        return args
     }
 
-    override fun getInt(): Int {
-        return lastArgument?.toIntOrNull() ?: throw CommandFileException("Не Int")
+    override fun executeCommand(command: Command) {
+        val args = getArgs(command)
+        when (val result = command.execute(args)) {
+            is CommandResult.Failure -> throw result.throwable
+            is CommandResult.Success -> {}
+        }
     }
+
+    override fun getString(): String = lastArgument ?: throw CommandFileException("Нет аргумента")
+
+    override fun getInt(): Int = lastArgument?.toIntOrNull() ?: throw CommandFileException("Не Int")
+
+    override fun getGenre(): MusicGenre =
+        lastArgument?.let { MusicGenre.valueOfOrNull(it) } ?: throw CommandFileException("Не MusicGenre")
 
     override fun getMusicBand(): MusicBand {
         val name = next()
@@ -74,7 +96,7 @@ class FileInteractor(
         val numberOfParticipants = next().toIntOrNull() ?: throw CommandFileException("Не Int")
         val albumsCount = next().toLongOrNull()
         val description = next()
-        val genre = MusicGenre.valueOfOrNull(next()) ?: throw CommandFileException("Не MusicBand")
+        val genre = MusicGenre.valueOfOrNull(next()) ?: throw CommandFileException("Не MusicGenre`")
         var album: Album? = null
         val albumName = next()
         if (albumName.isNotEmpty()) {

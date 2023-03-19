@@ -1,17 +1,18 @@
 package commands
 
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
  * The command that clears the collection.
  */
 class Clear : StorageCommand() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("clear : очистить коллекцию")
-    }
-    override fun execute() {
-        interactor.showMessage("Выполняется команда clear")
+    override fun getDescription(): String = "clear : очистить коллекцию"
+
+    override fun execute(args: ArrayList<Any>): CommandResult {
         storage.clear()
+        return CommandResult.Success("Clear")
     }
+
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf()
 }

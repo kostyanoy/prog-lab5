@@ -1,24 +1,27 @@
 package commands
 
 import org.koin.core.component.inject
+import utils.ArgumentType
 import utils.CommandManager
+import utils.CommandResult
+
 
 /**
  * The command displays help for available commands
  */
-class Help() : Command() {
-    val commandManager: CommandManager by inject()
+class Help : Command() {
+    private val commandManager: CommandManager by inject()
 
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        println("help : вывести справку по доступным командам")
-    }
+    override fun getDescription(): String = "help : вывести справку по доступным командам"
 
-    override fun execute() {
-        for (command in commandManager.commands.values) {
-            command.getDescription()
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        val message = buildString {
+            commandManager.commands.values.forEach {
+                appendLine(it.getDescription())
+            }
         }
+        return CommandResult.Success("Help", message)
     }
+
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf()
 }

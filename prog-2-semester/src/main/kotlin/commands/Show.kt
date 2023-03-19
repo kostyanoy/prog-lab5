@@ -1,22 +1,23 @@
 package commands
 
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
  * The command outputs all the elements of the collection in a string representation to the standard output stream
  */
 class Show : StorageCommand() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении")
-    }
-    override fun execute() {
-        interactor.showMessage("Выполняется команда show")
+    override fun getDescription(): String =
+        "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении"
+
+    override fun execute(args: ArrayList<Any>): CommandResult {
         val message = buildString {
             appendLine("Коллекция содержит: ")
             storage.getCollection { true }
-                .forEach { appendLine(it.value) }
+                .forEach { appendLine("${it.key} = ${it.value}") }
         }
-        interactor.showMessage(message)
+        return CommandResult.Success("Show", message)
     }
+
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf()
 }

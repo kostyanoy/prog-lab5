@@ -1,39 +1,37 @@
 package commands
 
+import data.MusicBand
 import exceptions.ParameterException
+import utils.ArgumentType
+import utils.CommandResult
 
 /**
  * The command adds a new element with the specified key.
  *
- * @exception [ParameterException] used if the element with the specified key already exist.
+ * Fails if the element with the specified key already exist.
  */
 class Insert : UndoableCommand() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
+    override fun getDescription(): String = "insert : добавить новый элемент с заданным ключом"
 
-        interactor.showMessage("insert : добавить новый элемент с заданным ключом")
-    }
-
-    override fun execute() {
+    override fun execute(args: ArrayList<Any>): CommandResult {
         previousPair.clear()
-        interactor.showMessage("Выполняется команда insert")
-        val userKey = interactor.getInt()
+        val userKey = args[0] as Int
         val collection = storage.getCollection { true }
         if (userKey in collection.keys) {
-            throw ParameterException("Элемент с таким ключом уже существует")
+            return CommandResult.Failure("Insert", ParameterException("Элемент с таким ключом уже существует"))
         }
-        previousPair.add(userKey to collection[userKey]!!)
-        storage.insert(userKey, interactor.getMusicBand())
+        previousPair.add(userKey to collection[userKey])
+        storage.insert(userKey, args[1] as MusicBand)
+        return CommandResult.Success("Insert")
     }
 
-    override fun undo() {
-        interactor.showMessage("Отменяется команда insert")
+    override fun undo(): CommandResult {
         previousPair.forEach { (key) ->
             storage.removeKey(key)
         }
         previousPair.clear()
+        return CommandResult.Success("Undo Insert")
     }
 
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf(ArgumentType.INT, ArgumentType.MUSIC_BAND)
 }

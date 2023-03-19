@@ -1,19 +1,16 @@
 package commands
 
 import org.koin.core.component.inject
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
 Represents an undo command that undoes the previous executed command.
-*/
-class Undo: Command() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("undo : отмена последней выполненной команды")
-    }
-    val history: CommandHistory by inject()
-    override fun execute() {
-        history.undoLastCommand()
-    }
+ */
+class Undo : Command() {
+    private val history: CommandHistory by inject()
+    override fun getDescription(): String = "undo : отмена последней выполненной команды"
+    override fun execute(args: ArrayList<Any>): CommandResult = history.undoLastCommand()
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf()
 
 }

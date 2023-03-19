@@ -1,18 +1,17 @@
 package commands
 
+import utils.ArgumentType
+import utils.CommandResult
+
 /**
  * The command outputs information about the collection to the standard output stream
  */
 class Info : StorageCommand() {
-    /**
-    Returns a description of the command.
-     */
-    override fun getDescription() {
-        interactor.showMessage("info : вывести в стандартный поток вывода информацию о коллекции")
+    override fun getDescription(): String = "info : вывести в стандартный поток вывода информацию о коллекции"
+
+    override fun execute(args: ArrayList<Any>): CommandResult {
+        return CommandResult.Success("Info", storage.getInfo())
     }
 
-    override fun execute() {
-        interactor.showMessage("Выполняется команда info")
-        storage.getInfo()
-    }
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf()
 }

@@ -1,33 +1,36 @@
 package commands
 
 import exceptions.ParameterException
-
+import utils.ArgumentType
+import utils.CommandResult
 /**
  * The command removes an item from the collection by its key
  *
  * @exception [ParameterException] used if the element with the specified key does not exist
  */
 class RemoveKey : UndoableCommand() {
-    override fun getDescription() {
-        interactor.showMessage("removeKey : удалить элемент из коллекции по его ключу")
-    }
-    override fun execute() {
+    override fun getDescription(): String = "remove_key : удалить элемент из коллекции по его ключу"
+
+    override fun execute(args: ArrayList<Any>): CommandResult {
         previousPair.clear()
-        interactor.showMessage("Выполняется команда removeKey")
-        val userKey = interactor.getInt()
+        val userKey = args[0] as Int
         val collection = storage.getCollection { true }
         if (userKey !in collection.keys) {
-            throw ParameterException("Элемента с таким ключом не существует")
+            return CommandResult.Failure("Remove_greater", ParameterException("Элемента с таким ключом не существует"))
         }
-        previousPair.add(userKey to collection[userKey]!!)
-        storage.removeKey(interactor.getInt())
+        previousPair.add(userKey to collection[userKey])
+        storage.removeKey(userKey)
+        return CommandResult.Success("Remove_key")
     }
 
-    override fun undo() {
-        interactor.showMessage("Отменяется команда removeKey")
+    override fun undo(): CommandResult {
         previousPair.forEach { (key, value) ->
-            storage.insert(key, value)
+            storage.insert(key, value!!)
         }
         previousPair.clear()
+        return CommandResult.Success("Undo Remove_key")
     }
+
+    override fun getArgumentTypes(): Array<ArgumentType> = arrayOf(ArgumentType.INT)
 }
+
